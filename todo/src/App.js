@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { TodoBanner, TodoBNanner } from "./TodoBanner";
+import { TodoBanner } from "./TodoBanner";
 import { TodoCreator } from "./TodoCreator"
-import { todoRow, TodoRow } from "./TodoRow"
+import { TodoRow } from "./TodoRow"
+import { VisibilityControl } from "./VisibilityControl"
 
 
 export default class App extends Component
@@ -12,7 +13,8 @@ export default class App extends Component
       userName: "Panchob",
       todoItems: [{
                     action: "Buy Flowers",
-                    done: false },
+                    done: false 
+                  },
                   {
                     action: "Get Shoes",
                     done: false
@@ -25,7 +27,7 @@ export default class App extends Component
                     action: "Call Joe",
                     done: false
                   }],
-      newItemText: "" 
+      showCompleted: true 
     }
   }
 
@@ -43,7 +45,8 @@ export default class App extends Component
                     action: task,
                     done: false
                    }]
-      });
+      },
+      () => localStorage.setItem("todos", JSON.stringify(this.state)));
     }
   }
 
@@ -52,10 +55,33 @@ export default class App extends Component
       item.action === todo.action ? {...item, done: !item.done} : item)
   });
 
-  todoTableRows = () =>
-  this.state.todoItems.map(item =>
-    <TodoRow key={ item.action } item={ item } callback={ this.toggleTodo } />
-    )
+  todoTableRows = (doneValue) =>
+  this.state.todoItems.filter(item => item.done === doneValue).map(item =>
+      <TodoRow key={ item.action } item={ item } callback={ this.toggleTodo } />)
+
+  componentDidMount = () => {
+    const data = localStorage.getItem("todos");
+    this.setState(data != null ? JSON.parse(data): {
+      userName: "Panchob",
+      todoItems: [{
+                    action: "Buy Flowers",
+                    done: false 
+                  },
+                  {
+                    action: "Get Shoes",
+                    done: false
+                  },
+                  {
+                    action: "Collect Tickets",
+                    done: true
+                  },
+                  {
+                    action: "Call Joe",
+                    done: false
+                  }],
+      showCompleted: true 
+    });
+  }
 
   render = () =>
       <div>
@@ -68,12 +94,30 @@ export default class App extends Component
                 <th>Description</th>
                 <th>Done</th>
               </tr>
-              </thead>
-              <tbody>
-                { this.todoTableRows() }
-              </tbody>
-          </table>
+            </thead>
+            <tbody>
+              { this.todoTableRows(false) }
+            </tbody>
+        </table>
+        <div className="bg-secondary text-white text-center p-2">
+          <VisibilityControl 
+            description="Completed Tasks" 
+            isChecked= { this.state.showCompleted } 
+            callback={ (checked) => this.setState( { showCompleted: checked })}>
+          </VisibilityControl>
+        </div>
+        { this.state.showCompleted && 
+          <table className="table table-striped table-bordered">
+            <thead>
+              <tr>
+                <th>Description</th>
+                <th>Done</th>
+              </tr>
+            </thead>
+            <tbody>
+              { this.todoTableRows(true) }
+            </tbody>
+          </table> }
         </div>
     </div>
 }
-
