@@ -40,5 +40,28 @@ export default class App extends Component {
         </button>
       </div>
     </div>
+    <table className="table table-striped table-bordered table-sm">
+      <thead className="bg-info text-white">
+        <tr>
+          <th>Value</th>
+          <th>Even?</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Table example</td>
+          <td>:O</td>
+        </tr>
+      </tbody>
+      <tfoot className="text-center">
+        <tr>
+          <td colSpan="2">
+            <button className="btn btn-info m-2">
+              Click Me 
+            </button>
+          </td>
+        </tr>
+      </tfoot>
+    </table>
   </div>
 }
