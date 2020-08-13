@@ -41,9 +41,9 @@ export const CartReducer = (storeData, action) => {
             let selection = newStore.cart.find(item => item.product.id === action.payload.product.id)
 
             newStore.cartItems -= selection.quantity
-            newStore.cartPrice -= selection.price * selection.quantity
+            newStore.cartPrice -= selection.quantity * selection.product.price
 
-            newStore.cart.splice(selection.findIndex(), 1)
+            newStore.cart = newStore.cart.filter(item => item.product.id !== selection.product.id )
 
             return newStore
 
