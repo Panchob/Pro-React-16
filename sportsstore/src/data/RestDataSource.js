@@ -1,9 +1,18 @@
 import Axios from "axios";
-import { RestUrls } from "./Urls"
+import { RestUrls } from "./Urls";
 
 export class RestDataSource {
 
-    GetData = (dataType, params) => this.SendRequest("get", RestUrls[dataType], params);
+    constructor(err_handler) {
+        this.error_handler = err_handler || (() => {});
+    }
 
-    SendRequest = (method, url, params) => Axios.request({ method, url, params });
+    GetData = (dataType, params) => 
+        this.SendRequest("get", RestUrls[dataType], params);
+
+    StoreData = (dataType, data) => 
+        this.SendRequest("post", RestUrls[dataType], {}, data);
+
+    SendRequest = (method, url, params, data) => 
+        Axios.request({ method, url, params, data });
 }

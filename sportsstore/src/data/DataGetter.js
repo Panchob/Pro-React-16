@@ -1,7 +1,7 @@
-import React, { Component } from  'react';
-import { DataTypes } from './Type';
+import React, { Component } from  "react";
+import { DataTypes } from "../data/Types";
 
-export class DataGetter extends Component{
+export class DataGetter extends Component {
     render() {
         return (
             <React.Fragment>
